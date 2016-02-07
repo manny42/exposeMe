@@ -1,0 +1,13 @@
+li a {
+    color: green;
+}
+
+#main-content {
+    text-align: center;
+    width: 50%;
+    margin: auto;
+}
+
+body {
+    background: white;
+}

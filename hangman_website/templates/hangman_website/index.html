@@ -1,0 +1,15 @@
+<head>
+    {% load staticfiles %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'hangman_website/style.css' %}"/>
+</head>
+
+<body>
+    <div id="main-content">
+        <h1>Welcome to the Djangman</h1>
+        <form method="post" action="{% url 'hangman_website:index' %}">
+            {% csrf_token %}
+            <input type="submit" value="Let's go!">
+        </form>
+    </div>
+</body>

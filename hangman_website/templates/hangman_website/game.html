@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load staticfiles %}
+
+    <script type="application/javascript">
+        var tries = {{ lives }};
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'hangman_website/style.css' %}"/>
+    <script type="application/javascript" src="{% static 'hangman_website/hangman.js' %}"></script>
+
+    <meta charset="UTF-8">
+    <title>Djangman</title>
+</head>
+<body>
+
+<div id="main-content">
+    <h1>The Djangman</h1>
+
+    {% if error %}
+        <p><strong>{{ error }}</strong></p>
+    {% endif %}
+
+    {% if solved %}
+        <p><strong>Well done you solved it!</strong></p>
+    {% endif %}
+
+    <p>{% for val in mask %}
+        {% if forloop.last %}
+            {{ val }}
+        {% else %}
+            {{ val }}.
+        {% endif %}
+    {% endfor %}</p>
+    {% if tested|length %}
+    <p>Here are the letters you tried {% for val in tested %}{{ val }} {% endfor %}</p>
+    {% endif %}
+
+    {% if not solved and lives > 0 %}
+        <form action="{% url 'hangman_website:index' %}" method="post">
+            {% csrf_token %}
+            {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+                {% if letter|lower not in tested %}
+                    <input type="submit" value="{{ letter }}" name="letter">
+                {% endif %}
+            {% endfor %}
+        </form>
+    {% endif %}
+
+    {% if solved or lives <= 0 %}
+        <form action="{% url 'hangman_website:reset' %}" method="get">
+            <input type="submit" value="Play Again!">
+        </form>
+    {% endif %}
+
+    <p>{{ lives }} lives remaining.</p>
+    <canvas id="stickman">This Text shows because the Browser you are using does NOT support HTML5 Canvas tag</canvas>
+
+</div>
+</body>
+</html>
