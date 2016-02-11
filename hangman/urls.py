@@ -17,5 +17,5 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'^hangman/', include('hangman_website.urls')),
-    url(r'^$', include('my_cv.urls')),
+    url(r'^', include('my_cv.urls')),
 ]
