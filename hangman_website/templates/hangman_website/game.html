@@ -34,17 +34,26 @@
         {% endif %}
     {% endfor %}</p>
     {% if tested|length %}
-    <p>Here are the letters you tried {% for val in tested %}{{ val }} {% endfor %}</p>
+        <p>Here are the letters you tried {% for val in tested %}{{ val }} {% endfor %}</p>
     {% endif %}
 
     {% if not solved and lives > 0 %}
         <form action="{% url 'hangman_website:index' %}" method="post">
             {% csrf_token %}
-            {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
-                {% if letter|lower not in tested %}
-                    <input type="submit" value="{{ letter }}" name="letter">
-                {% endif %}
-            {% endfor %}
+            <p>
+                {% for letter in '0123456789' %}
+                    {% if letter|lower not in tested %}
+                        <input type="submit" value="{{ letter }}" name="letter">
+                    {% endif %}
+                {% endfor %}
+            </p>
+            <p>
+                {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
+                    {% if letter|lower not in tested %}
+                        <input type="submit" value="{{ letter }}" name="letter">
+                % load staticfiles %}    {% endif %}
+                {% endfor %}
+            </p>
         </form>
     {% endif %}
 
