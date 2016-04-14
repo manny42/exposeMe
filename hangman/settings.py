@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'hangman_website.apps.HangmanWebsiteConfig',
-    'my_cv.apps.MyCvConfig',
+    'file_lister',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

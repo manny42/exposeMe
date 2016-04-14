@@ -4,12 +4,13 @@
     {% load staticfiles %}
 
     <script type="application/javascript">
-        var tries = {{ lives }};
+        var tries = {{ hangman.lives }};
     </script>
 
     <link rel="stylesheet" type="text/css" href="{% static 'hangman_website/style.css' %}"/>
     <script type="application/javascript" src="{% static 'hangman_website/hangman.js' %}"></script>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Djangman</title>
 </head>
@@ -22,11 +23,11 @@
         <p><strong>{{ error }}</strong></p>
     {% endif %}
 
-    {% if solved %}
+    {% if hangman.solved %}
         <p><strong>Well done you solved it!</strong></p>
     {% endif %}
 
-    <p>{% for val in mask %}
+    <p>{% for val in hangman.mask %}
         {% if forloop.last %}
             {{ val }}
         {% else %}
@@ -37,33 +38,33 @@
         <p>Here are the letters you tried {% for val in tested %}{{ val }} {% endfor %}</p>
     {% endif %}
 
-    {% if not solved and lives > 0 %}
+    {% if not hangman.solved and hangman.lives > 0 %}
         <form action="{% url 'hangman_website:index' %}" method="post">
             {% csrf_token %}
             <p>
                 {% for letter in '0123456789' %}
-                    {% if letter|lower not in tested %}
+                    {% if letter|lower not in hangman.tested %}
                         <input type="submit" value="{{ letter }}" name="letter">
                     {% endif %}
                 {% endfor %}
             </p>
             <p>
                 {% for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' %}
-                    {% if letter|lower not in tested %}
+                    {% if letter|lower not in hangman.tested %}
                         <input type="submit" value="{{ letter }}" name="letter">
-                % load staticfiles %}    {% endif %}
+                    {% endif %}
                 {% endfor %}
             </p>
         </form>
     {% endif %}
 
-    {% if solved or lives <= 0 %}
+    {% if hangman.solved or hangman.lives <= 0 %}
         <form action="{% url 'hangman_website:reset' %}" method="get">
             <input type="submit" value="Play Again!">
         </form>
     {% endif %}
 
-    <p>{{ lives }} lives remaining.</p>
+    <p>{{ hangman.lives }} lives remaining.</p>
     <canvas id="stickman">This Text shows because the Browser you are using does NOT support HTML5 Canvas tag</canvas>
 
 </div>
