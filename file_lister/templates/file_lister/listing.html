@@ -15,6 +15,11 @@
             list-style:none;
             padding-left: 10px;
         }
+
+        .col-centered{
+            float: none;
+            margin: 0 auto;
+        }
     </style>
 
     <meta charset="UTF-8">
@@ -22,9 +27,25 @@
 </head>
 <body>
 
-<ul>
-    {% include "file_lister/directory.html" %}
-</ul>
+<div class="col-md-4 col-centered">
+    <div class="text-center">
+        <h2>
+            Bienvenue sur le serveur de fichier de tryhard.fr
+        </h2>
+        <h4>
+            Faites vous plaisir!
+        </h4>
+        <p>
+            <i>
+                Pour telecharger un dossier sous forme de zip cliquez sur l'image du dossier
+            </i>
+        </p>
+    </div>
+
+    <ul>
+        {% include "file_lister/directory.html" %}
+    </ul>
+</div>
 
 </body>
 </html>
