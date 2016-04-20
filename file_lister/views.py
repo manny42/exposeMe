@@ -49,13 +49,14 @@ class FileLister:
 			HttpResponseServerError("Server Error")
 		else:
 			zip_filename = "{}.zip".format(os.path.basename(path))
-			zf = zipfile.ZipFile(zip_filename, "w")
+			zip_path = os.path.join('/tmp', zip_filename)
+			zf = zipfile.ZipFile(zip_path, "w")
 			FileLister.zipdir(path, zf)
 			zf.close()
-			size = os.path.getsize(zip_filename)
+			size = os.path.getsize(zip_path)
 			chunk_size = 8192
-			response = ZipStreamingHttpResponse(FileWrapper(open(zip_filename, 'rb'), chunk_size),
-												zip_filename,
+			response = ZipStreamingHttpResponse(FileWrapper(open(zip_path, 'rb'), chunk_size),
+												zip_path,
 												content_type="application/zip")
 			response['Content-Length'] = size
 			response['Content-Disposition'] = "attachment; filename=%s" % zip_filename
