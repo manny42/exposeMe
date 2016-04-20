@@ -79,7 +79,7 @@ class FileLister:
 		for file in os.listdir(directory):
                         print(os.path.join(directory, file))
                         try:
-                                os.path.join(directory, file).encode('utf-32', 'strict')
+                                os.path.join(directory, file).encode('utf-8', 'strict')
                                 if os.path.isdir(os.path.join(directory, file)):
                                         result_list.append({
                                                 "type": "D",
