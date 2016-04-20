@@ -77,19 +77,24 @@ class FileLister:
 	def _recursive_directory_search(directory='.'):
 		result_list = []
 		for file in os.listdir(directory):
-			if os.path.isdir(os.path.join(directory, file)):
-				result_list.append({
-					"type": "D",
-					"name": file,
-					"path": os.path.join(directory, file),
-					"files": FileLister._recursive_directory_search(os.path.join(directory, file))
-				})
-			else:
-				result_list.append({
-					"type": "F",
-					"path": os.path.join(directory, file),
-					"name": file
-				})
+                        print(os.path.join(directory, file))
+                        try:
+                                os.path.join(directory, file).encode('utf-32', 'strict')
+                                if os.path.isdir(os.path.join(directory, file)):
+                                        result_list.append({
+                                                "type": "D",
+                                                "name": file,
+                                                "path": os.path.join(directory, file),
+                                                "files": FileLister._recursive_directory_search(os.path.join(directory, file))
+                                        })
+                                else:
+                                        result_list.append({
+                                                "type": "F",
+                                                "path": os.path.join(directory, file),
+                                                "name": file
+                                        })
+                        except Exception as e:
+                                print(e)
 
 		return result_list
 

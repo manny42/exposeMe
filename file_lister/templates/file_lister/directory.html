@@ -1,9 +1,8 @@
-{% load staticfiles %}
 {% for file in files %}
     {% if file.type == "D" %}
         <li>
             <a target="_blank" href="/zip_file?path={{file.path}}">
-                <img class="icon" src="{% static 'file_lister/images/zip.png' %}">
+                <img class="icon" src="/static/images/zip.png">
             </a>
             <a data-toggle="collapse" href="#{{file.name}}">
                 {{file.name}}
@@ -18,7 +17,7 @@
         {% endif %}
     {% else %}
         <li>
-            <img class="icon" src="{% static 'file_lister/images/file.jpg' %}">
+            <img class="icon" src="/static/images/file.jpg">
             <a target="_blank" href="/get_file?path={{file.path}}">
                 {{file.name}}
             </a>

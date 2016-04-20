@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_CHARSET = 'utf-32'
 
 # Application definition
 
