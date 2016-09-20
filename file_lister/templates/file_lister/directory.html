@@ -1,16 +1,16 @@
-{% load space_to_underscore %}
+{% load space_and_dot_to_underscore %}
 {% for file in files %}
     {% if file.type == "D" %}
         <li>
             <a target="_blank" href="/zip_file?path={{file.path}}">
                 <img class="icon" src="/static/images/zip.png">
             </a>
-            <a data-toggle="collapse" href="#{{ file.name|space_to_underscore }}">
+            <a data-toggle="collapse" href="#{{ file.name|space_and_dot_to_underscore }}">
                 {{file.name}}
             </a>
         </li>
         {% if file.files|length %}
-        <ul id="{{ file.name|space_to_underscore }}" class="collapse directory">
+        <ul id="{{ file.name|space_and_dot_to_underscore }}" class="collapse directory">
             {% with files=file.files %}
                 {% include "file_lister/directory.html" %}
             {% endwith %}
