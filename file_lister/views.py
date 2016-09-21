@@ -99,7 +99,7 @@ class FileLister:
             except Exception as e:
                 print(e)
 
-        return result_list
+        return sorted(result_list, key=lambda result_file: result_file["name"])
 
     @staticmethod
     def file_listing(request):
