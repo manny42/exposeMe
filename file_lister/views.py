@@ -53,7 +53,7 @@ class FileLister:
             zip_filename = "{}.zip".format(os.path.basename(path))
             zip_path = os.path.join('/tmp', zip_filename)
             zf = zipfile.ZipFile(zip_path, "w")
-            FileLister.zipdir(path, zf)
+            FileLister.zip_dir(path, zf)
             zf.close()
             size = os.path.getsize(zip_path)
             chunk_size = 8192
