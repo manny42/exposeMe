@@ -1,4 +1,5 @@
 import os, zipfile, mimetypes
+from natsort import natsorted, ns
 
 from django.http import HttpResponseServerError, StreamingHttpResponse
 from django.shortcuts import render
@@ -99,7 +100,7 @@ class FileLister:
             except Exception as e:
                 print(e)
 
-        return sorted(result_list, key=lambda result_file: result_file["name"])
+        return natsorted(result_list, key=lambda result_file: result_file["name"], alg=ns.IGNORECASE)
 
     @staticmethod
     def file_listing(request):
