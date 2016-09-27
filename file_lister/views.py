@@ -78,36 +78,44 @@ class FileLister:
             return FileLister._generate_file_response(open(path, "rb"), path, size)
 
     @staticmethod
-    def _recursive_directory_search(directory='.'):
+    def _recursive_directory_search(directory='.', firstdepth = False):
         result_list = []
         for file in os.listdir(directory):
-            print(os.path.join(directory, file))
             try:
                 os.path.join(directory, file).encode('utf-8', 'strict')
+                file_path = os.path.join(directory, file)
+                if (firstdepth):
+                    print(file_path)
+                    print(os.path.getmtime(file_path))
                 if os.path.isdir(os.path.join(directory, file)):
                     result_list.append({
                         "type": "D",
                         "name": file,
-                        "path": os.path.join(directory, file),
-                        "files": FileLister._recursive_directory_search(os.path.join(directory, file))
+                        "path": file_path,
+                        "files": FileLister._recursive_directory_search(file_path),
+                        "time": os.path.getmtime(file_path)
                     })
                 else:
                     result_list.append({
                         "type": "F",
-                        "path": os.path.join(directory, file),
-                        "name": file
+                        "path": file_path,
+                        "name": file,
+                        "time": os.path.getmtime(file_path)
                     })
             except Exception as e:
                 print(e)
 
-        return natsorted(result_list, key=lambda result_file: result_file["name"], alg=ns.IGNORECASE)
+        if firstdepth:
+            return natsorted(result_list, key=lambda result_file: result_file["time"], alg=ns.IGNORECASE)
+        else:
+            return natsorted(result_list, key=lambda result_file: result_file["name"])
 
     @staticmethod
     def file_listing(request):
         path = os.path.dirname(os.path.abspath(__file__))
         myfiles = os.path.join(path, FileListerConfig.file_root)
         os.chdir(myfiles)
-        file_listing = FileLister._recursive_directory_search()
+        file_listing = FileLister._recursive_directory_search('.', True)
         context = {
             "files": file_listing
         }
