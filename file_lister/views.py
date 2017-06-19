@@ -1,6 +1,7 @@
 import os, zipfile, mimetypes
 from natsort import natsorted, ns
 
+from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponseServerError, StreamingHttpResponse
 from django.shortcuts import render
 from wsgiref.util import FileWrapper
@@ -51,19 +52,14 @@ class FileLister:
         if path[0] != '.':
             HttpResponseServerError("Server Error")
         else:
-            zip_filename = "{}.zip".format(os.path.basename(path))
-            zip_path = os.path.join('/tmp', zip_filename)
-            zf = zipfile.ZipFile(zip_path, "w")
-            FileLister.zip_dir(path, zf)
-            zf.close()
-            size = os.path.getsize(zip_path)
-            chunk_size = 8192
-            response = ZipStreamingHttpResponse(FileWrapper(open(zip_path, 'rb'), chunk_size),
-                                                zip_path,
-                                                content_type="application/zip")
-            response['Content-Length'] = size
-            response['Content-Disposition'] = "attachment; filename=%s" % zip_filename
-            return response
+            with NamedTemporaryFile() as tmp:
+                with zipfile.ZipFile(tmp, "w") as zf:
+                    FileLister.zip_dir(path, zf)
+
+                    size = os.path.getsize(tmp.name)
+                    response = FileLister._generate_file_response(open(tmp.name, "rb"), path + ".zip", size)
+
+                    return response
 
     @staticmethod
     def file_download(request):
