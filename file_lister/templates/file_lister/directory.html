@@ -6,12 +6,12 @@
             <a target="_blank" href="/zip_file?path={{file.path|replace_plus_in_url}}">
                 <img class="icon" src="{% static "file_lister/images/zip.png" %}">
             </a>
-            <a data-toggle="collapse" href="#{{ file.name|space_and_dot_to_underscore|remove_brackets_and_plus }}">
+            <a data-toggle="collapse" href="#{{ file.name|special_to_underscore|remove_brackets_and_plus }}">
                 {{file.name}}
             </a>
         </li>
         {% if file.files|length %}
-        <ul id="{{ file.name|space_and_dot_to_underscore|remove_brackets_and_plus }}" class="collapse directory">
+        <ul id="{{ file.name|special_to_underscore|remove_brackets_and_plus }}" class="collapse directory">
             {% with files=file.files %}
                 {% include "file_lister/directory.html" %}
             {% endwith %}
