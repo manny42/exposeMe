@@ -36,11 +36,13 @@ class FileLister:
     @staticmethod
     def _generate_file_response(stream, file, size):
         filename = os.path.basename(file)
+        print("Filename: " + filename)
         chunk_size = 8192
         response = StreamingHttpResponse(FileWrapper(stream, chunk_size),
                                          content_type=mimetypes.guess_type(file)[0])
         response['Content-Length'] = size
-        response['Content-Disposition'] = "attachment; filename=%s" % filename
+        safe_filename = filename.replace(',', '')
+        response['Content-Disposition'] = "attachment; filename=%s" % safe_filename
         return response
 
     @staticmethod
@@ -67,6 +69,8 @@ class FileLister:
         myfiles = os.path.join(path, FileListerConfig.file_root)
         os.chdir(myfiles)
         path = request.GET.get('path', '').replace('../', '')
+        print("Just got a path")
+        print(path)
         if path[0] != '.':
             HttpResponseServerError("Server Error")
         else:
@@ -102,7 +106,7 @@ class FileLister:
                 print(e)
 
         if firstdepth:
-            return natsorted(result_list, key=lambda result_file: result_file["time"], alg=ns.IGNORECASE)
+            return natsorted(result_list, key=lambda result_file: result_file["time"], alg=ns.IGNORECASE, reverse=True)
         else:
             return natsorted(result_list, key=lambda result_file: result_file["name"])
 
